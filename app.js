@@ -14,8 +14,7 @@ app.use(
 );
 app.use(express.static("public"));
 
-//TODO
-mongoose.connect("mongodb://localhost:27017wikiDB", { useNewUrlParser: true });
+mongoose.connect("mongodb://localhost:27017/wikiDB", { useNewUrlParser: true });
 
 const articleSchema = {
   title: String,
@@ -23,6 +22,17 @@ const articleSchema = {
 };
 
 const Article = mongoose.model("Article", articleSchema);
+
+// get all articles in our database
+app.get("/articles", function (req, res) {
+  Article.find((err, foundArticles) => {
+    if (!err) {
+      res.send(foundArticles);
+    } else {
+      res.send(err);
+    }
+  });
+});
 
 app.listen(3000, function () {
   console.log("Server started on port 3000");
