@@ -25,6 +25,7 @@ const Article = mongoose.model("Article", articleSchema);
 
 app
   .route("/articles")
+
   // get all articles in our database
   .get(function (req, res) {
     Article.find((err, foundArticles) => {
@@ -35,6 +36,7 @@ app
       }
     });
   })
+
   // handles posts requests to all articles
   .post((req, res) => {
     const newArticle = new Article({
@@ -50,6 +52,7 @@ app
       }
     });
   })
+
   // delete all articles in our database
   .delete((req, res) => {
     Article.deleteMany((err) => {
@@ -60,6 +63,16 @@ app
       }
     });
   });
+
+app.route("/articles/:articleTitle").get((req, res) => {
+  Article.find({ title: req.params.articleTitle }, (err, foundArticle) => {
+    if (foundArticle) {
+      res.send(foundArticle);
+    } else {
+      res.send("No articles matching that title was found");
+    }
+  });
+});
 
 app.listen(3000, function () {
   console.log("Server started on port 3000");
