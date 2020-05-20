@@ -34,6 +34,23 @@ app.get("/articles", function (req, res) {
   });
 });
 
+// handles posts requests to all articles
+app.post("/articles", (req, res) => {
+  const newArticle = new Article({
+    title: req.body.title,
+    content: req.body.content,
+  });
+
+  // passing an optional callback so that the client can get a response from the server
+  newArticle.save((err) => {
+    if (!err) {
+      res.send("Successfully added a new article.");
+    } else {
+      res.send(err);
+    }
+  });
+});
+
 app.listen(3000, function () {
   console.log("Server started on port 3000");
 });
